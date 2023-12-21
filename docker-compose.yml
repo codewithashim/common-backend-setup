@@ -1,0 +1,29 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: millmanagerbackend
+    container_name: millManagerApplication
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      NODE_ENV: ${NODE_ENV}
+    command: yarn start
+
+  mongodb:
+    image: mongo
+    container_name: milsDBContainer
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_MONGO_DATABASE}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
